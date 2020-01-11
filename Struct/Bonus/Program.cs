@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Bonus
 {
@@ -7,15 +6,24 @@ namespace Bonus
     {
         static void Main(string[] args)
         {
-        Accauntant dirBonus = new Accauntant { hours = 10, worker = Post.director };
+            Accauntant[] staff = new Accauntant[] {
+        new Accauntant(hours:10, worker:Post.director),
+        new Accauntant(hours:24, worker:Post.secretary),
+        new Accauntant(hours: 10, worker: Post.shop_Assistant),
+        new Accauntant(hours: 0, worker: Post.cleaner) };
 
-            if (dirBonus.AskForBonus(dirBonus.worker, dirBonus.hours))
+
+            foreach (Accauntant elem in staff)
             {
-                Console.WriteLine($"Hours of work: {dirBonus.hours} \nmust work: {PostHours.postHours[Post.director]} \nGive a bonus for {dirBonus.worker}");
-            }
-            else
-            {
-                Console.WriteLine($"Hours of work: {dirBonus.hours} \nmust work: {PostHours.postHours[Post.director]} \nNo bonus for {dirBonus.worker}");
+
+                if (elem.AskForBonus(elem.worker, elem.hours))
+                {
+                    Console.WriteLine($"Staff position: {elem.worker} \nHours of work: {elem.hours} \nmust work: {(int)elem.worker} \nGive a bonus for {elem.worker}\n\n");
+                }
+                else
+                {
+                    Console.WriteLine($"Staff position: {elem.worker} \nHours of work: {elem.hours} \nmust work: {(int)elem.worker} \nNo bonus for {elem.worker}\n\n");
+                }
             }
 
             Console.ReadLine();
@@ -24,10 +32,10 @@ namespace Bonus
 
     enum Post
     {
-        director,
-        shopAssistant,
-        cleaner,
-        secretary
+        director = 8,
+        shop_Assistant = 12,
+        cleaner = 4,
+        secretary = 6
     }
 
     class Accauntant
@@ -35,10 +43,16 @@ namespace Bonus
         public int hours;
         public Post worker;
 
+        public Accauntant (int hours, Post worker)
+        {
+            this.hours = hours;
+            this.worker = worker;
+        }
+
       public bool AskForBonus(Post worker, int hours)
         {
             bool res = false;
-        int _hours = (int) PostHours.postHours[worker];
+            int _hours = (int)worker;
 
             if (_hours < hours)
             {
@@ -48,11 +62,5 @@ namespace Bonus
 
         }
     }
-
- static class PostHours
-{
-    public static Dictionary<Post, int> postHours = new Dictionary<Post, int>()
-    { { Post.director, 8 }, { Post.shopAssistant, 12 }, { Post.cleaner, 4 }, { Post.secretary, 8 } };
-}
 }
     
